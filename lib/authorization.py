@@ -59,7 +59,7 @@ class AuthorizationToken(object):
             client_secret=self.client_secret
         )
 
-        request = Request(access_token_url)
+        request = Request(url=access_token_url, method=const.GET)
         response = json.load(urlopen(request).read().decode())
 
         return response.get("access_token"), response.get("expires_in")
