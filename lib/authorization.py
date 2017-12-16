@@ -1,4 +1,5 @@
 import json
+from functools import wraps
 from urllib.request import Request, urlopen
 
 from lib import const
@@ -16,6 +17,19 @@ class AuthorizationTokenRejected(Exception):
     pass
 
 
+def validate_response(func):
+    """
+    Response is valid when `access_token` and `expires_in` are included.
+    """
+    @wraps(func)
+    def validate(response):
+        if not response.get("access_token", False) and response.get("expires_in"):
+            raise AuthorizationTokenRejected()
+        return func(response)
+
+    return validate
+
+
 class AuthorizationToken(object):
     access_token_url_template = \
         "{endpoint}/grand_type={grand_type}&code={code}&redirect_uri={redirect_uri}&client_id={client_id}&client_secret={client_secret}"
@@ -31,6 +45,7 @@ class AuthorizationToken(object):
     def __init__(self, code):
         self.code = code
 
+    @validate_response
     def exchange_authorization_code(self):
         """
         Method returns token for given code.
@@ -47,17 +62,8 @@ class AuthorizationToken(object):
         request = Request(access_token_url)
         response = json.load(urlopen(request).read().decode())
 
-        if not self.is_valid(response):
-            raise AuthorizationTokenRejected()
-
         return response.get("access_token"), response.get("expires_in")
 
-    def is_valid(self, response):
-        """
-        Response is valid when `access_token` and `expires_in` are included.
-        """
-        return response.get("access_token", False) and response.get("expires_in")
-    
 
 class AuthorizationCallbacks(object):
     """
