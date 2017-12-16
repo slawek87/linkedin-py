@@ -1,0 +1,2 @@
+GET = "GET"
+POST = "POST"
