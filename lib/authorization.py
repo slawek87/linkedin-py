@@ -12,7 +12,7 @@ class AuthenticationRejected(Exception):
     pass
 
 
-class AuthorizationTokenForbidden(Exception):
+class AuthorizationTokenRejected(Exception):
     pass
 
 
@@ -48,7 +48,7 @@ class AuthorizationToken(object):
         response = json.load(urlopen(request).read().decode())
 
         if not self.is_valid(response):
-            raise AuthorizationTokenForbidden()
+            raise AuthorizationTokenRejected()
 
         return response.get("access_token"), response.get("expires_in")
 
