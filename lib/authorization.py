@@ -1,7 +1,6 @@
-import json
 import urllib
+import requests
 from functools import wraps
-from urllib.request import Request, urlopen
 from urllib.parse import quote
 from lib import const
 
@@ -32,10 +31,7 @@ def validate_response(func):
 
 
 class AuthorizationToken(object):
-    access_token_url_template = \
-        "{endpoint}/grand_type={grand_type}&code={code}&redirect_uri={redirect_uri}&client_id={client_id}&client_secret={client_secret}"
-
-    endpoint = "https://www.linkedin.com/oauth/v2/accessToken"
+    endpoint = "https://www.linkedin.com/oauth/v2/accessToken?"
     method = const.POST
     grant_type = "authorization_code"
 
@@ -43,27 +39,28 @@ class AuthorizationToken(object):
     client_id = None
     client_secret = None
 
-    def __init__(self, code):
+    def __init__(self, code, redirect_uri, client_id, client_secret):
         self.code = code
+        self.redirect_uri = redirect_uri
+        self.client_id = client_id
+        self.client_secret = client_secret
 
     # @validate_response
     def exchange_authorization_code(self):
         """
         Method returns token for given code.
         """
-        access_token_url = self.access_token_url_template.format(
-            endpoint=self.endpoint,
-            grand_type=self.grant_type,
-            code=self.code,
-            redirect_uri=self.redirect_uri,
-            client_id=self.client_id,
-            client_secret=self.client_secret
-        )
+        request_data = {
+            'grand_type': self.grant_type,
+            'code': self.code,
+            'redirect_uri': self.redirect_uri,
+            'client_id': self.client_id,
+            'client_secret': self.client_secret
+        }
 
-        request = Request(url=access_token_url, method=const.GET)
-        response = json.load(urlopen(request).read().decode())
+        response = requests.get(self.endpoint, data=request_data)
 
-        return response.get("access_token"), response.get("expires_in")
+        return response.content.get("access_token"), response.content.get("expires_in")
 
 
 class AuthorizationCallbacks(object):
@@ -92,21 +89,20 @@ class Authorization(object):
     * `process_callback` - should be used in endpoint where you handle Linkedin callbacks.
        Method returns error or user token.
     """
-    authorization_url_template = \
-        "{endpoint}/response_type={response_type}&client_id={client_id}&redirect_uri={redirect_uri}&state={state}&scope={scope}"
-
     endpoint = "https://www.linkedin.com/oauth/v2/authorization?"
     method = const.GET
     response_type = "code"
 
     redirect_uri = None
     client_id = None
+    client_secret = None
     scope = None
     state = None
 
-    def __init__(self, redirect_uri, client_id, state, scope="r_basicprofile"):
+    def __init__(self, redirect_uri, client_id, client_secret, state, scope="r_basicprofile"):
         self.redirect_uri = redirect_uri
         self.client_id = client_id
+        self.client_secret = client_secret
         self.state = state
         self.scope = scope
 
@@ -143,14 +139,21 @@ class Authorization(object):
             raise AuthorizationRejected("Authorization code is incorrect.")
 
         if callback.is_approved():
-            access_token, expires_in = AuthorizationToken(response["code"]).exchange_authorization_code()
+            access_token, expires_in = AuthorizationToken(
+                code=response["code"],
+                redirect_uri=self.redirect_uri,
+                client_id=self.client_id,
+                client_secret=self.client_secret
+            ).exchange_authorization_code()
 
         return access_token, expires_in
 
 
 if __name__ == '__main__':
     state = 12134
-    authorization = Authorization(redirect_uri="http://0.0.0.0:8000/authorize/", client_id="770vfbx6zalos0", state=state)
+    authorization = Authorization(
+        redirect_uri="http://0.0.0.0:8000/authorize/", client_id="770vfbx6zalos0", state=state, client_secret="YJK5RcXiYISsLYzz"
+    )
 
     print(authorization.get_authorization_url())
 
