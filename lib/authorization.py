@@ -1,7 +1,8 @@
 import json
+import urllib
 from functools import wraps
 from urllib.request import Request, urlopen
-
+from urllib.parse import quote
 from lib import const
 
 
@@ -45,7 +46,7 @@ class AuthorizationToken(object):
     def __init__(self, code):
         self.code = code
 
-    @validate_response
+    # @validate_response
     def exchange_authorization_code(self):
         """
         Method returns token for given code.
@@ -80,7 +81,7 @@ class AuthorizationCallbacks(object):
 
     def is_authenticated(self, state):
         """State is CSRF token."""
-        return state == self.response.state
+        return state == self.response["state"]
 
 
 class Authorization(object):
@@ -92,9 +93,9 @@ class Authorization(object):
        Method returns error or user token.
     """
     authorization_url_template = \
-        "{endpoint}/response_type={response_type}&client_id={client_id}&redirect_uri={redirect_uri}&state={state]&scope={scope}"
+        "{endpoint}/response_type={response_type}&client_id={client_id}&redirect_uri={redirect_uri}&state={state}&scope={scope}"
 
-    endpoint = "https://www.linkedin.com/oauth/v2/authorization"
+    endpoint = "https://www.linkedin.com/oauth/v2/authorization?"
     method = const.GET
     response_type = "code"
 
@@ -103,20 +104,22 @@ class Authorization(object):
     scope = None
     state = None
 
-    def __init__(self, redirect_uri, client_id, scope="r_basicprofile"):
+    def __init__(self, redirect_uri, client_id, state, scope="r_basicprofile"):
         self.redirect_uri = redirect_uri
         self.client_id = client_id
+        self.state = state
         self.scope = scope
 
     def get_authorization_url(self):
         """Method generates authorization url."""
-        return self.authorization_url_template.format(
-            endpoint=self.endpoint,
-            response_type=self.response_type,
-            client_id=self.client_id,
-            redirect_uri=self.redirect_uri,
-            state=self.state,
-            scope=self.scope
+        return self.endpoint + urllib.parse.urlencode(
+            {
+                'response_type': self.response_type,
+                'client_id': self.client_id,
+                'redirect_uri': self.redirect_uri,
+                'state': self.state,
+                'scope': self.scope
+            }
         )
 
     def process_callback(self, response):
@@ -140,6 +143,20 @@ class Authorization(object):
             raise AuthorizationRejected("Authorization code is incorrect.")
 
         if callback.is_approved():
-            access_token, expires_in = AuthorizationToken(response["code"])
+            access_token, expires_in = AuthorizationToken(response["code"]).exchange_authorization_code()
 
         return access_token, expires_in
+
+
+if __name__ == '__main__':
+    state = 12134
+    authorization = Authorization(redirect_uri="http://0.0.0.0:8000/authorize/", client_id="770vfbx6zalos0", state=state)
+
+    print(authorization.get_authorization_url())
+
+    response = {
+        'code': "AQQ8SJkVJggFqHMeejqkeCAJN7fxZhu0E5qpsZNJI8pdak_t8946EU7C32SvJv3BfhP6uX7dv3Lxo4gTeD-a5BqIBkF3lhvDDfLPid2p6R8mu9FNB4S3MZZ6zpnGm7-GzN3uucXeVa5ZyWVVPwFZH8oimlh3TA",
+        'state': state
+    }
+
+    print(authorization.process_callback(response))
