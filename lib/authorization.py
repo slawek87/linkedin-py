@@ -23,15 +23,19 @@ def validate_response(func):
     """
     @wraps(func)
     def validate(response):
-        if not response.get("access_token", False) and response.get("expires_in"):
-            raise AuthorizationTokenRejected()
-        return func(response)
+        request = func(response)
+        json_data = request.json()
+
+        if request.status_code == 400 or json_data.get('error', False):
+            raise AuthorizationRejected(json_data.get('error_description'))
+
+        return json_data
 
     return validate
 
 
 class AuthorizationToken(object):
-    endpoint = "https://www.linkedin.com/oauth/v2/accessToken?"
+    endpoint = "https://www.linkedin.com/oauth/v2/accessToken"
     method = const.POST
     grant_type = "authorization_code"
 
@@ -45,22 +49,29 @@ class AuthorizationToken(object):
         self.client_id = client_id
         self.client_secret = client_secret
 
-    # @validate_response
-    def exchange_authorization_code(self):
-        """
-        Method returns token for given code.
-        """
+    @validate_response
+    def send_request(self):
         request_data = {
-            'grand_type': self.grant_type,
+            'grant_type': self.grant_type,
             'code': self.code,
             'redirect_uri': self.redirect_uri,
             'client_id': self.client_id,
             'client_secret': self.client_secret
         }
 
-        response = requests.get(self.endpoint, data=request_data)
+        headers = {
+            'Content-Type':  "application/x-www-form-urlencoded"
+        }
 
-        return response.content.get("access_token"), response.content.get("expires_in")
+        return requests.post(self.endpoint, data=request_data, headers=headers, timeout=60)
+
+    def exchange_authorization_code(self):
+        """
+        Method returns token for given code.
+        """
+        response = self.send_request()
+
+        return response.get("access_token"), response.get("expires_in")
 
 
 class AuthorizationCallbacks(object):
@@ -155,10 +166,10 @@ if __name__ == '__main__':
         redirect_uri="http://0.0.0.0:8000/authorize/", client_id="770vfbx6zalos0", state=state, client_secret="YJK5RcXiYISsLYzz"
     )
 
-    print(authorization.get_authorization_url())
+    # print(authorization.get_authorization_url())
 
     response = {
-        'code': "AQQ8SJkVJggFqHMeejqkeCAJN7fxZhu0E5qpsZNJI8pdak_t8946EU7C32SvJv3BfhP6uX7dv3Lxo4gTeD-a5BqIBkF3lhvDDfLPid2p6R8mu9FNB4S3MZZ6zpnGm7-GzN3uucXeVa5ZyWVVPwFZH8oimlh3TA",
+        'code': "AQSHv3SYhDOVbiDHRqz3LamQIG2fv3WqEgGSs1RPkwrwl12hSg-8pI73oBgBbtdc0mu2bWvg6X9L6C57nVsbzM0OS67MaxQcOKgIgeVM_a88Dg-ovjo3qjBctYBLR_iY2WwVHrjdcWTukHmhIJzGzwVjqEKbVA",
         'state': state
     }
 
