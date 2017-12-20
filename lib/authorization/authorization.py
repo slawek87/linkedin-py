@@ -72,7 +72,7 @@ class Authorization(object):
     * `process_callback` - should be used in endpoint where you handle Linkedin callbacks.
        Method returns error or user token.
     """
-    endpoint = "https://www.linkedin.com/oauth/v2/authorization?"
+    endpoint = "https://www.linkedin.com/oauth/v2/authorization"
     method = const.GET
     response_type = "code"
 
