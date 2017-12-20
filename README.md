@@ -1,6 +1,6 @@
 # Introduction Linkedin-py
 
-Linkedin-py uses linkedin API to provide an easy-to-use Python interface for handle Linkedin service.
+Linkedin-py provides an easy-to-use Python interface for handle Linkedin API.
 
 # Configuring your LinkedIn application
 
