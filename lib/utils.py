@@ -1,8 +1,26 @@
 from functools import wraps
 
+import re
 import requests
 
 from lib.authorization.exceptions import AuthorizationRejected
+
+JSON = 'json'
+
+
+def prepare_url(url, params, response_format=JSON):
+    """
+    Function prepares url with Linkedin's standards.
+    """
+    r_unwanted = re.compile("[\s\n\t\r]")
+    params = r_unwanted.sub("", params)
+
+    url = "{url}{params}".format(url=url, params=params)
+
+    if response_format == JSON:
+        url += "?format=json"
+
+    return url
 
 
 def validate_response(func):

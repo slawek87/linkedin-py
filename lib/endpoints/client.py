@@ -17,5 +17,4 @@ class LinkedinClient(object):
         Returns response content.
         """
         authentication = Authentication(self.token)
-
         return requests.get(url=self.url, headers=authentication.get_headers())
