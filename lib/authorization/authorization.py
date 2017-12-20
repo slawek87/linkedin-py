@@ -1,37 +1,8 @@
 import urllib
 import requests
-from functools import wraps
 from urllib.parse import quote
 from lib import const
-
-
-class AuthorizationRejected(Exception):
-    pass
-
-
-class AuthenticationRejected(Exception):
-    pass
-
-
-class AuthorizationTokenRejected(Exception):
-    pass
-
-
-def validate_response(func):
-    """
-    Response is valid when `access_token` and `expires_in` are included.
-    """
-    @wraps(func)
-    def validate(response):
-        request = func(response)
-        json_data = request.json()
-
-        if request.status_code == 400 or json_data.get('error', False):
-            raise AuthorizationRejected(json_data.get('error_description'))
-
-        return json_data
-
-    return validate
+from lib.authorization.decorators import validate_response, validate_callback
 
 
 class AuthorizationToken(object):
@@ -129,33 +100,17 @@ class Authorization(object):
             }
         )
 
+    @validate_callback
     def process_callback(self, response):
         """
-        We need to handle two types of callback:
-            - when application is rejected
-            - when application is approved
-
-        If callback is authenticated and approved,
-        method returns access token and its expiration time.
+        Method returns access token and its expiration time.
         """
-        callback = AuthorizationCallbacks(response)
-        access_token = None
-        expires_in = None
-
-        if callback.is_rejected():
-            raise AuthorizationRejected(
-                {"error": callback.response["error"], "description": callback.response["error_description"]})
-
-        if not callback.is_authenticated(self.state):
-            raise AuthorizationRejected("Authorization code is incorrect.")
-
-        if callback.is_approved():
-            access_token, expires_in = AuthorizationToken(
-                code=response["code"],
-                redirect_uri=self.redirect_uri,
-                client_id=self.client_id,
-                client_secret=self.client_secret
-            ).exchange_authorization_code()
+        access_token, expires_in = AuthorizationToken(
+            code=response["code"],
+            redirect_uri=self.redirect_uri,
+            client_id=self.client_id,
+            client_secret=self.client_secret
+        ).exchange_authorization_code()
 
         return access_token, expires_in
 
@@ -166,10 +121,10 @@ if __name__ == '__main__':
         redirect_uri="http://0.0.0.0:8000/authorize/", client_id="770vfbx6zalos0", state=state, client_secret="YJK5RcXiYISsLYzz"
     )
 
-    # print(authorization.get_authorization_url())
+    print(authorization.get_authorization_url())
 
     response = {
-        'code': "AQSHv3SYhDOVbiDHRqz3LamQIG2fv3WqEgGSs1RPkwrwl12hSg-8pI73oBgBbtdc0mu2bWvg6X9L6C57nVsbzM0OS67MaxQcOKgIgeVM_a88Dg-ovjo3qjBctYBLR_iY2WwVHrjdcWTukHmhIJzGzwVjqEKbVA",
+        'code': "AQTW8j0ATTDolUBx6A65Yy_c56xRcD8YBpTM9ea6adZJtipyoccj4oT943PsKW7RrbW6xEN6YkDUOSDUun1r0rGCmJ1sAR6AG0wpoVjthoEiDA7LJGobGgbznhRoWn-OSb60_rHnIJpkW2Jl6XY3t8VBNIfO_g",
         'state': state
     }
 
