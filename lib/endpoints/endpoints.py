@@ -1,4 +1,4 @@
-from lib.endpoints.client import LinkedinClient
+from lib.client import LinkedinClient
 from lib.utils import prepare_url
 
 
