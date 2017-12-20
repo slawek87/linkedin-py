@@ -26,20 +26,3 @@ def validate_callback(func):
             return func(instance, response)
 
     return validate
-
-
-def validate_response(func):
-    """
-    Response is valid when `access_token` and `expires_in` are included.
-    """
-    @wraps(func)
-    def validate(instance):
-        response = func(instance)
-        json_data = response.json()
-
-        if response.status_code == 400:
-            raise AuthorizationRejected(json_data.get('error_description'))
-
-        return json_data
-
-    return validate

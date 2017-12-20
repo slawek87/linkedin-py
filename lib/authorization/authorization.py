@@ -2,7 +2,8 @@ import urllib
 import requests
 from urllib.parse import quote
 from lib import const
-from lib.authorization.decorators import validate_response, validate_callback
+from lib.authorization.decorators import validate_callback
+from lib.utils import validate_response
 
 
 class AuthorizationToken(object):
@@ -113,19 +114,3 @@ class Authorization(object):
         ).exchange_authorization_code()
 
         return access_token, expires_in
-
-
-if __name__ == '__main__':
-    state = 12134
-    authorization = Authorization(
-        redirect_uri="http://0.0.0.0:8000/authorize/", client_id="770vfbx6zalos0", state=state, client_secret="YJK5RcXiYISsLYzz"
-    )
-
-    print(authorization.get_authorization_url())
-
-    response = {
-        'code': "AQTW8j0ATTDolUBx6A65Yy_c56xRcD8YBpTM9ea6adZJtipyoccj4oT943PsKW7RrbW6xEN6YkDUOSDUun1r0rGCmJ1sAR6AG0wpoVjthoEiDA7LJGobGgbznhRoWn-OSb60_rHnIJpkW2Jl6XY3t8VBNIfO_g",
-        'state': state
-    }
-
-    print(authorization.process_callback(response))
