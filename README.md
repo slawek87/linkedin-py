@@ -38,7 +38,7 @@ Before we make any call to Linkedin API we have to do authorization process. Aut
 Open `authorization_url` and login in your Linkedin profile. After that you will be redirect to `redirect_url`.
 In `redirect_url` you should create your own view and handle that GET request.
 
-Linkedin API send GET request with two parameters:
+Linkedin API sends GET request with two parameters:
 - code - you need that value to get Linkedin Token.
 - state - this is your CSRF. You can use this to check if request is valid.
 
