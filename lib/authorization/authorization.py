@@ -102,12 +102,12 @@ class Authorization(object):
         )
 
     @validate_callback
-    def process_callback(self, response):
+    def process_callback(self, request):
         """
         Method returns access token and its expiration time.
         """
         access_token, expires_in = AuthorizationToken(
-            code=response["code"],
+            code=request["code"],
             redirect_uri=self.redirect_uri,
             client_id=self.client_id,
             client_secret=self.client_secret

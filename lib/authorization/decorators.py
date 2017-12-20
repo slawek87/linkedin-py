@@ -12,8 +12,8 @@ def validate_callback(func):
     from lib.authorization.authorization import AuthorizationCallbacks
 
     @wraps(func)
-    def validate(instance, response):
-        callback = AuthorizationCallbacks(response)
+    def validate(instance, request):
+        callback = AuthorizationCallbacks(request)
 
         if callback.is_rejected():
             raise AuthorizationRejected(
@@ -23,6 +23,6 @@ def validate_callback(func):
             raise AuthorizationRejected("Authorization code is incorrect.")
 
         if callback.is_approved():
-            return func(instance, response)
+            return func(instance, request)
 
     return validate
