@@ -48,26 +48,26 @@ Linkedin API sends GET request with two parameters:
 When you got `code` you need to exchange it to get token.
 
 ```python
-    from linkedin_py.lib.authorization.main import Authorization
+from linkedin_py.lib.authorization.main import Authorization
 
-    state = "DCEeFWf45A53sdfKef424"
-    redirect_url = "https://www.example.com/auth/linkedin"
-    client_id = "9996666AAAA"
-    client_secret = "XYZASS"
+state = "DCEeFWf45A53sdfKef424"
+redirect_url = "https://www.example.com/auth/linkedin"
+client_id = "9996666AAAA"
+client_secret = "XYZASS"
 
-    authorization = Authorization(
-        redirect_uri=redirect_url,
-        client_id=client_id,
-        client_secret=client_secret,
-        state=state
-    )
+authorization = Authorization(
+    redirect_uri=redirect_url,
+    client_id=client_id,
+    client_secret=client_secret,
+    state=state
+)
 
-    linkedin_received_request = {
-        'code': "L3g7vIst8EW3t9PdQN6HwxS2X9fZyaUKCJQJ8hzdRtDBn6",
-        'state': state
-    }
+linkedin_received_request = {
+    'code': "L3g7vIst8EW3t9PdQN6HwxS2X9fZyaUKCJQJ8hzdRtDBn6",
+    'state': state
+}
 
-    access_token, expires_in = authorization.process_callback(linkedin_received_request)
+access_token, expires_in = authorization.process_callback(linkedin_received_request)
 ```
 
 Method `process_callback` returns two values:
@@ -84,24 +84,24 @@ Here you will find list of implemented Linkedin Requests.
 In default request returns response with whole profile data.
 
 ```python
-    from linkedin_py.lib.endpoints.main import retrieve_profile_data
+from linkedin_py.lib.endpoints.main import retrieve_profile_data
 
-    token = 'AQVUFKfVWHbIBn9ckq_TjJMlFBw'
-    profile_data = retrieve_profile_data(token)
+token = 'AQVUFKfVWHbIBn9ckq_TjJMlFBw'
+profile_data = retrieve_profile_data(token)
 
-    print(profile_data)
+print(profile_data)
 ```
 
 You can modify it by setting up your own `params` value. This value must be a string.
 
 ```python
-    from linkedin_py.lib.endpoints.main import retrieve_profile_data
+from linkedin_py.lib.endpoints.main import retrieve_profile_data
 
-    token = 'AQVUFKfVWHbIBn9ckq_TjJMlFBw'
-    params = ':(first-name,last-name,headline,picture-url)'
-    profile_data = retrieve_profile_data(token=token, params=params)
+token = 'AQVUFKfVWHbIBn9ckq_TjJMlFBw'
+params = ':(first-name,last-name,headline,picture-url)'
+profile_data = retrieve_profile_data(token=token, params=params)
 
-    print(profile_data)
+print(profile_data)
 ```
 
 This request returns response only with `firstName', 'headline', 'lastName', pictureUrl`.
@@ -116,10 +116,10 @@ https://developer.linkedin.com/support/developer-program-transition
 If you got access to extra Linkedin Endpoints you should use this method `retrieve_data`.
 
 ```python
-    token = 'AQVUFKfVWHbIBn9ckq_TjJMlFBw'
-    url = 'url="https://api.linkedin.com/v1/people/~"'
-    params = ':(first-name,last-name,headline,picture-url)'
-    fetched_data = retrieve_data(url=url, token=token, params=params)
+token = 'AQVUFKfVWHbIBn9ckq_TjJMlFBw'
+url = 'url="https://api.linkedin.com/v1/people/~"'
+params = ':(first-name,last-name,headline,picture-url)'
+fetched_data = retrieve_data(url=url, token=token, params=params)
 
-    print(fetched_data)
+print(fetched_data)
 ```
