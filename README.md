@@ -86,12 +86,12 @@ In default request returns response with whole profile data.
     print(profile_data)
 ```
 
-You can modify it by setting up your own `param` value. This value must be a string.
+You can modify it by setting up your own `params` value. This value must be a string.
 
 ```python
     token = 'AQVUFKfVWHbIBn9ckq_TjJMlFBw'
     params = ':(first-name,last-name,headline,picture-url)'
-    profile_data = retrieve_profile_data(token)
+    profile_data = retrieve_profile_data(token=token, params=params)
 
     print(profile_data)
 ```
