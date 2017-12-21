@@ -1,8 +1,8 @@
 import requests
 
-from lib import const
-from lib.authentication.authentication import Authentication
-from lib.utils import validate_response
+from linkedin_py.lib import const
+from linkedin_py.lib.authentication.main import Authentication
+from linkedin_py.lib.utils import validate_response
 
 
 class LinkedinClient(object):

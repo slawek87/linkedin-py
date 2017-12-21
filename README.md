@@ -14,6 +14,8 @@ Before we make any call to Linkedin API we have to do authorization process. Aut
 1. Login Linkedin user with special url. Linkedin-py prepares that url for you.
 
 ```python
+    from linkedin_py.lib.authorization.main import Authorization
+
     state = "DCEeFWf45A53sdfKef424"
     redirect_url = "https://www.example.com/auth/linkedin"
     client_id = "9996666AAAA"
@@ -46,6 +48,8 @@ Linkedin API sends GET request with two parameters:
 When you got `code` you need to exchange it to get token.
 
 ```python
+    from linkedin_py.lib.authorization.main import Authorization
+
     state = "DCEeFWf45A53sdfKef424"
     redirect_url = "https://www.example.com/auth/linkedin"
     client_id = "9996666AAAA"
@@ -80,6 +84,8 @@ Here you will find list of implemented Linkedin Requests.
 In default request returns response with whole profile data.
 
 ```python
+    from linkedin_py.lib.endpoints.main import retrieve_profile_data
+
     token = 'AQVUFKfVWHbIBn9ckq_TjJMlFBw'
     profile_data = retrieve_profile_data(token)
 
@@ -89,6 +95,8 @@ In default request returns response with whole profile data.
 You can modify it by setting up your own `params` value. This value must be a string.
 
 ```python
+    from linkedin_py.lib.endpoints.main import retrieve_profile_data
+
     token = 'AQVUFKfVWHbIBn9ckq_TjJMlFBw'
     params = ':(first-name,last-name,headline,picture-url)'
     profile_data = retrieve_profile_data(token=token, params=params)

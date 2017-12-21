@@ -1,6 +1,6 @@
 from functools import wraps
 
-from lib.authorization.exceptions import AuthorizationRejected
+from linkedin_py.lib.authorization.exceptions import AuthorizationRejected
 
 
 def validate_callback(func):
@@ -9,7 +9,7 @@ def validate_callback(func):
         - when application is rejected
         - when application is approved
     """
-    from lib.authorization.authorization import AuthorizationCallbacks
+    from linkedin_py.lib.authorization.main import AuthorizationCallbacks
 
     @wraps(func)
     def validate(instance, request):

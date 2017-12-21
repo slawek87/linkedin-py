@@ -3,7 +3,7 @@ from functools import wraps
 import re
 import requests
 
-from lib.authorization.exceptions import AuthorizationRejected
+from linkedin_py.lib.authorization.exceptions import AuthorizationRejected
 
 JSON = 'json'
 

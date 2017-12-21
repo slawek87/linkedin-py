@@ -1,9 +1,9 @@
 import urllib
 import requests
 from urllib.parse import quote
-from lib import const
-from lib.authorization.decorators import validate_callback
-from lib.utils import validate_response
+from linkedin_py.lib import const
+from linkedin_py.lib.authorization.decorators import validate_callback
+from linkedin_py.lib.utils import validate_response
 
 
 class AuthorizationToken(object):
