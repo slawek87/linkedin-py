@@ -42,3 +42,33 @@ Linkedin API sends GET request with two parameters:
 - code - you need that value to get Linkedin Token.
 - state - this is your CSRF. You can use this to check if request is valid.
 
+2. Process callback.
+When you got `code` you need to exchange it to get token.
+
+```python
+    state = "DCEeFWf45A53sdfKef424"
+    redirect_url = "https://www.example.com/auth/linkedin"
+    client_id = "9996666AAAA"
+    client_secret = "XYZASS"
+
+    authorization = Authorization(
+        redirect_uri=redirect_url,
+        client_id=client_id,
+        client_secret=client_secret,
+        state=state
+    )
+
+    linkedin_received_request = {
+        'code': "L3g7vIst8EW3t9PdQN6HwxS2X9fZyaUKCJQJ8hzdRtDBn6",
+        'state': state
+    }
+
+    access_token, expires_in = authorization.process_callback(linkedin_received_request)
+```
+
+Method `process_callback` returns two values:
+   - Linkedin Token needed to authenticate user's requests.
+   - Linkedin Token's expiration time.
+
+
+# Authentication
