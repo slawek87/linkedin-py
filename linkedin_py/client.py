@@ -1,7 +1,7 @@
 import requests
 
 from linkedin_py import const
-from linkedin_py.authentication import Authentication
+from linkedin_py.authentication.main import Authentication
 from linkedin_py.utils import validate_response
 
 

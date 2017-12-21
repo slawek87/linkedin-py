@@ -13,7 +13,7 @@ except:
 
 setup(
     name='linkedin-py',
-    version='1.0.5',
+    version='1.0.1',
     packages=['linkedin_py', 'linkedin_py.authentication', 'linkedin_py.authorization', 'linkedin_py.endpoints'],
     url='',
     download_url='https://github.com/slawek87/linkedin-py',
