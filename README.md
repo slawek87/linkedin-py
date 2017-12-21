@@ -1,6 +1,6 @@
 # Introduction Linkedin-py
 
-Linkedin-py provides an easy-to-use Python interface for handle Linkedin API requests.
+Linkedin-py provides an easy-to-use Python interface for handle Linkedin API endpoints.
 
 # Configuration LinkedIn Application
 
@@ -85,7 +85,7 @@ Here you will find list of implemented Linkedin Requests.
 
 ## Profile Data
 
-In default request returns response with whole profile data.
+Profile endpoint in default returns response with whole profile data.
 
 ```python
 from linkedin_py.endpoints.main import retrieve_profile_data
@@ -113,11 +113,11 @@ Request doesn't return missing data in your profile.
 
 ## Universal Retriever
 
-Since Linkedin remove its endpoints from public API. We created universal method to fetch data from their endpoints.
+Since Linkedin removes its endpoints from public API. We created universal method to fetch data from their endpoints.
 
 https://developer.linkedin.com/support/developer-program-transition
 
-If you got access to extra Linkedin Endpoints you should use this method `retrieve_data`.
+If you got access to extra Linkedin Endpoints you should use `retrieve_data` method.
 
 ```python
 from linkedin_py.endpoints.main import retrieve_data
