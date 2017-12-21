@@ -7,7 +7,7 @@ Linkedin-py provides an easy-to-use Python interface for handle Linkedin API.
 Before you start check how to configure your Linkedin application. To do this read the first point of this manual https://developer.linkedin.com/docs/oauth2.
 
 
-# Authorization
+# Authorization Request
 
 Before we make any call to Linkedin API we have to do authorization process. Authorization process consists of two steps.
 
@@ -71,4 +71,31 @@ Method `process_callback` returns two values:
    - Linkedin Token's expiration time.
 
 
-# Authentication
+# Linkedin Requests
+
+Here you will find list of implemented Linkedin Requests.
+
+## Profile Data
+
+In default request returns response with whole profile data.
+
+```python
+    token = 'AQVUFKfVWHbIBn9ckq_TjJMlFBw'
+    profile_data = retrieve_profile_data(token)
+
+    print(profile_data)
+```
+
+You can modify it by setting up your own param value.
+
+```python
+    token = 'AQVUFKfVWHbIBn9ckq_TjJMlFBw'
+    params = ':(first-name,last-name,headline,picture-url)'
+    profile_data = retrieve_profile_data(token)
+
+    print(profile_data)
+```
+
+This request returns response only with `firstName', 'headline', 'lastName', pictureUrl`.
+
+* Request doesn't return missing data in your profile.
