@@ -86,7 +86,7 @@ In default request returns response with whole profile data.
     print(profile_data)
 ```
 
-You can modify it by setting up your own param value.
+You can modify it by setting up your own `param` value. This value must be a string.
 
 ```python
     token = 'AQVUFKfVWHbIBn9ckq_TjJMlFBw'
@@ -97,5 +97,4 @@ You can modify it by setting up your own param value.
 ```
 
 This request returns response only with `firstName', 'headline', 'lastName', pictureUrl`.
-
-* Request doesn't return missing data in your profile.
+Request doesn't return missing data in your profile.
