@@ -71,7 +71,7 @@ linkedin_received_request = {
     'state': state
 }
 
-access_token, expires_in = authorization.process_callback(linkedin_received_request)
+access_token, expires_in = authorization.process_callback(**linkedin_received_request)
 ```
 
 Method `process_callback` returns two values:
