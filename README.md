@@ -6,6 +6,10 @@ Linkedin-py provides an easy-to-use Python interface for handle Linkedin API req
 
 Before you start check how to configure your Linkedin application. To do this read the first point of this manual https://developer.linkedin.com/docs/oauth2.
 
+# Installation Linkedin-py
+```
+pip install linkedin-py
+```
 
 # Authorization Request
 
