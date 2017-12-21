@@ -1,5 +1,5 @@
-from linkedin_py.lib.client import LinkedinClient
-from linkedin_py.lib.utils import prepare_url
+from linkedin_py.client import LinkedinClient
+from linkedin_py.utils import prepare_url
 
 
 profile_data_full_params = """
