@@ -14,23 +14,23 @@ Before we make any call to Linkedin API we have to do authorization process. Aut
 1. Login Linkedin user with special url. Linkedin-py prepares that url for you.
 
 ```python
-    from linkedin_py.lib.authorization.main import Authorization
+from linkedin_py.lib.authorization.main import Authorization
 
-    state = "DCEeFWf45A53sdfKef424"
-    redirect_url = "https://www.example.com/auth/linkedin"
-    client_id = "9996666AAAA"
-    client_secret = "XYZASS"
+state = "DCEeFWf45A53sdfKef424"
+redirect_url = "https://www.example.com/auth/linkedin"
+client_id = "9996666AAAA"
+client_secret = "XYZASS"
 
-    authorization = Authorization(
-        redirect_uri=redirect_url, 
-        client_id=client_id, 
-        client_secret=client_secret, 
-        state=state
-    )
+authorization = Authorization(
+    redirect_uri=redirect_url,
+    client_id=client_id,
+    client_secret=client_secret,
+    state=state
+)
 
-    authorization_url = authorization.get_authorization_url()
+authorization_url = authorization.get_authorization_url()
 
-    print(authorization_url)
+print(authorization_url)
 ```
 - state - A unique string value of your choice that is hard to guess. Used to prevent CSRF.
 - redirect_url - The URL your users will be sent back to after authorization. This value must match one of the defined OAuth 2.0 Redirect URLs in your application configuration.
