@@ -27,5 +27,3 @@ def retrieve_profile_data(token, params=profile_data_full_params):
     request = LinkedinClient(token, url)
 
     return request.retrieve()
-
-

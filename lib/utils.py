@@ -30,11 +30,14 @@ def validate_response(func):
     @wraps(func)
     def validate(instance):
         response = func(instance)
-        json_data = response.json()
 
         if response.status_code != requests.codes.ok:
-            raise AuthorizationRejected(json_data)
+            message = {
+                'status_code': response.status_code,
+                'description': response.content
+            }
+            raise AuthorizationRejected(message)
 
-        return json_data
+        return response.json()
 
     return validate
