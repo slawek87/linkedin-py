@@ -27,3 +27,13 @@ def retrieve_profile_data(token, params=profile_data_full_params):
     request = LinkedinClient(token, url)
 
     return request.retrieve()
+
+
+def retrieve_data(token, url, params=None):
+    """
+    Universal method to retrieve data from Linkedin API.
+    """
+    url = prepare_url(url, params)
+    request = LinkedinClient(token, url)
+
+    return request.retrieve()

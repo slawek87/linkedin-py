@@ -98,3 +98,20 @@ You can modify it by setting up your own `params` value. This value must be a st
 
 This request returns response only with `firstName', 'headline', 'lastName', pictureUrl`.
 Request doesn't return missing data in your profile.
+
+## Universal Retriever
+
+Since Linkedin remove its endpoints from public API. We created universal method to fetch data from their endpoints.
+
+https://developer.linkedin.com/support/developer-program-transition
+
+If you got access to extra Linkedin Endpoints you should use this method `retrieve_data`.
+
+```python
+    token = 'AQVUFKfVWHbIBn9ckq_TjJMlFBw'
+    url = 'url="https://api.linkedin.com/v1/people/~"'
+    params = ':(first-name,last-name,headline,picture-url)'
+    fetched_data = retrieve_data(url=url, token=token, params=params)
+
+    print(fetched_data)
+```
