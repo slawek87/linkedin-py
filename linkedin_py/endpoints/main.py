@@ -21,7 +21,7 @@ profile_data_full_params = """
 def retrieve_profile_data(token, params=profile_data_full_params):
     """
     In default function returns all data what Linkedin returns for profile endpoint.
-    To change this you need to modify `params` parameter.
+    To change this you need to modify `params` argument.
     """
     url = prepare_url("https://api.linkedin.com/v1/people/~", params)
     request = LinkedinClient(token, url)
