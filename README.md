@@ -1,6 +1,5 @@
 
-# Introduction
-![](https://lh3.googleusercontent.com/wudlxEl5zYhukimJjCj0MlUdpEeiBcFUmIywLgxHN0ezSUZLHV1W4ovf3ZSGiTaCN9otkMPkttncmaqHeqgb=w2560-h1432)
+![image](https://lh3.googleusercontent.com/wudlxEl5zYhukimJjCj0MlUdpEeiBcFUmIywLgxHN0ezSUZLHV1W4ovf3ZSGiTaCN9otkMPkttncmaqHeqgb=w2560-h1432)
 
 Linkedin-py provides an easy-to-use Python interface for handle Linkedin API endpoints.
 
