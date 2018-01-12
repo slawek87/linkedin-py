@@ -124,7 +124,7 @@ If you got access to extra Linkedin Endpoints you should use `retrieve_data` met
 from linkedin_py.endpoints.main import retrieve_data
 
 token = 'AQVUFKfVWHbIBn9ckq_TjJMlFBw'
-url = 'url="https://api.linkedin.com/v1/people/~"'
+url = 'https://api.linkedin.com/v1/people/~'
 params = ':(first-name,last-name,headline,picture-url)'
 fetched_data = retrieve_data(url=url, token=token, params=params)
 
